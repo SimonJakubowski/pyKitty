@@ -1,0 +1,3 @@
+[submodule "kitty/randomprimary"]
+	path = kitty/randomprimary
+	url = https://github.com/SimonJakubowski/django-randomprimary.git
