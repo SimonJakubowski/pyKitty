@@ -5,8 +5,10 @@ from django.conf.urls import patterns, include, url
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
+    # Welcome Page:
     url(r'^$', 'kitty.views.home', name='home'),
+    # for setting language
+    url(r'^i18n/', include('django.conf.urls.i18n')),
     # url(r'^kitty/', include('kitty.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
