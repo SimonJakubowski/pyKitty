@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.utils.translation import gettext as _
 from django.utils import translation
-from kitty.models import KittyForm, Kitty, Item, ItemForm, KittyUser
+from kitty.models import KittyForm, Kitty, Item, ItemForm, KittyUser, KittyUserForm
 from django.db.models import Sum
 
 LANGUAGES = (
@@ -28,10 +28,11 @@ def show(request, id):
     i = Item.objects.filter(kitty=k).annotate(Sum('useritem__quantity')) # items
     u = KittyUser.objects.filter(kitty=k) # kitty user
     i_form = ItemForm()
-
+    u_form = KittyUserForm()
     return render(request, 'show.html', {  'LANGUAGES':LANGUAGES,
                                             'title': k.name, 
                                             'k':k, 
                                             'i':i, 
                                             'i_form':i_form,
-                                            'u':u,})
+                                            'u':u,
+                                            'u_form':u_form,})

@@ -19,7 +19,12 @@
         }
     </script>
     {% include "modal_view.html" with identifier="newItem" k_id=k.id title="New Item" form=i_form onSave="addItem();" %}
-    {% include "modal_view.html" with identifier="newUser" k_id=k.id title="New User" %}
+    <script>
+        function addUser() {
+        Dajaxice.kitty.addUser(Dajax.process,{'form':$('#id_newUser_form').serialize(true)});
+        }
+    </script>
+    {% include "modal_view.html" with identifier="newUser" k_id=k.id title="New User" form=u_form onSave="addUser();" %}
 {% endblock %}
 
 {% block content %}
@@ -51,8 +56,8 @@
                 {% for userItem in user.useritem_set.all %}
                 <td style="text-align:right;"><span id="id_user_item_{{userItem.id}}">{{userItem.quantity}}</span> 
                     <div class="btn-group btn-group-vertical">
-                        <button class="btn btn-small" onclick=""><i class="icon-plus"></i></button>
-                        <button class="btn btn-small" onclick=""><i class="icon-minus"></i></button>
+                        <button class="btn btn-default btn-sm" onclick=""><span class="glyphicon glyphicon-chevron-up"></span></button>
+                        <button class="btn btn-default btn-sm" onclick=""><span class="glyphicon glyphicon-chevron-down"></span></button>
                     </div>
                 </td>
                 {% endfor %}

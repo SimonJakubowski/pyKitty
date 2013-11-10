@@ -35,6 +35,13 @@ class KittyUser(models.Model):
     name = models.CharField(max_length=50)
     money = models.DecimalField(max_digits=5, decimal_places=2)
 
+# Form for creating a KittyUser
+class KittyUserForm(forms.ModelForm):
+
+    class Meta:
+        model = KittyUser
+        fields = ['name','money']
+
 # connection between user <-> items
 # stores users item consumption as quantity 
 class UserItem(models.Model):
