@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-09 22:19+0100\n"
+"POT-Creation-Date: 2013-11-10 19:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,10 +17,58 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: templates/welcome_page.html:4
+#: kitty/views.py:9
+msgid "German"
+msgstr ""
+
+#: kitty/views.py:10
+msgid "English"
+msgstr ""
+
+#: templates/create.html:27
+msgid "Create"
+msgstr "Erstellen"
+
+#: templates/show.html:28
+#, python-format
+msgid ""
+"\n"
+"    Kitty was created by %(created_by)s.\n"
+"    "
+msgstr ""
+"\n"
+"    Kaffeetasse wurde von %(created_by)s erstellt.\n"
+"    "
+
+
+#: templates/show.html:32
+msgid "new Item"
+msgstr "neues Getränk"
+
+#: templates/show.html:33
+msgid "new User"
+msgstr "neuer Nutzer"
+
+#: templates/show.html:39
+msgid "Name (balance)"
+msgstr "Name (Guthaben)"
+
+#: templates/show.html:65
+msgid "item quantity"
+msgstr "Vorhandene Menge"
+
+#: templates/show.html:71
+msgid "consumed items"
+msgstr "Verbraucht"
+
+#: templates/show.html:77
+msgid "available items"
+msgstr "Noch vorhanden"
+
+#: templates/welcome_page.html:8
 msgid "a new Kitty ..."
 msgstr "Getränkekasse ..."
 
-#: templates/welcome_page.html:6
+#: templates/welcome_page.html:10
 msgid "create it now"
 msgstr "Jetzt erstellen!"
