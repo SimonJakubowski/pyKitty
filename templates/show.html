@@ -3,10 +3,13 @@
 {% load i18n %}
 {% load staticfiles %}
 {% load subtract_filter %}
+{% load dajaxice_templatetags %}
 
 {% block script %}
 <script src="{% static 'jquery/jquery-1.10.2.min.js' %}"></script>
 <script src="{% static 'bootstrap/bootstrap.min.js' %}"></script>
+{% dajaxice_js_import %}
+<script src="{% static '/static/dajax/jquery.dajax.core.js' %}"></script>
 {% endblock %}
 
 {% block modals %}

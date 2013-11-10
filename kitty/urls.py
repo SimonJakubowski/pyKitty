@@ -4,6 +4,9 @@ from django.conf.urls import patterns, include, url
 # from django.contrib import admin
 # admin.autodiscover()
 
+from dajaxice.core import dajaxice_autodiscover, dajaxice_config
+dajaxice_autodiscover()
+
 urlpatterns = patterns('',
     # Welcome Page:
     url(r'^$', 'kitty.views.home', name='home'),
@@ -13,6 +16,9 @@ urlpatterns = patterns('',
     url(r'^(?P<id>\w{5})/', 'kitty.views.show'),
     # for setting language
     url(r'^i18n/', include('django.conf.urls.i18n')),
+    # Dajax
+    url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
+    
     # url(r'^kitty/', include('kitty.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
