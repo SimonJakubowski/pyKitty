@@ -1,0 +1,78 @@
+{% extends "master.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+{% load subtract_filter %}
+
+{% block script %}
+<script src="{% static 'jquery/jquery-1.10.2.min.js' %}"></script>
+<script src="{% static 'bootstrap/bootstrap.min.js' %}"></script>
+{% endblock %}
+
+{% block modals %}
+    {% include "modal_view.html" with identifier="newItem" k_id=k.id title="New Item" %}
+    {% include "modal_view.html" with identifier="newUser" k_id=k.id title="New User" %}
+{% endblock %}
+
+{% block content %}
+
+<div style="height: 100px;">
+  <p>{% blocktrans  with k.created_by as created_by %}
+    Kitty was created by {{created_by}}.
+    {% endblocktrans %}</p>
+
+  <a href="#newItemModal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-glass icon-white"></i> {% trans "new Item"%}</a>
+  <a href="#newUserModal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-user icon-white"></i> {% trans "new User"%}</a>
+</div>
+
+<div class="container-full">
+<table class="table table-striped table-hover">
+    <thead>
+        <tr id="id_item_name_table">
+                <th>{% trans "Name (balance)"%}</th>
+                {% for item in i %}
+                    <th style="text-align:right;"><strong>{{item.name}}</strong> <br/> ({{item.price|floatformat:2}} EUR)</th>
+                {% endfor %}
+        </tr>
+    </thead>
+    <tbody id="id_user_table">
+        {% for user in u %}
+            <tr id="id_user_{{user.id}}">
+                <td id="id_user_name_{{user.id}}">
+                    <a href="#">{{user.name}} ({{user.money|floatformat:2}} EUR)</a>
+                </td>
+                {% for userItem in user.useritem_set.all %}
+                <td style="text-align:right;"><span id="id_user_item_{{userItem.id}}">{{userItem.quantity}}</span> 
+                    <div class="btn-group btn-group-vertical">
+                        <button class="btn btn-small" onclick=""><i class="icon-plus"></i></button>
+                        <button class="btn btn-small" onclick=""><i class="icon-minus"></i></button>
+                    </div>
+                </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+        <th>{% trans "item quantity" %}</th>
+        {% for item in i %}
+        <th style="text-align:right;">{{item.quantity}}</th>
+        {% endfor %}
+    </tr>
+    <tr id="id_item_quantity_table">
+        <th>{% trans "consumed items" %}</th>
+        {% for item in i %}
+        <th style="text-align:right;" id="id_item_quantity_{{item.id}}">{{item.useritem__quantity__sum}}</th>
+        {% endfor %}    
+    </tr>
+    <tr>
+        <th>{% trans "available items" %}</th>
+        {% for item in i %}
+        <th style="text-align:right;" id="id_item_quantity_{{item.id}}">{{item.quantity|subtract:item.useritem__quantity__sum}}</th>
+        {% endfor %}
+    </tr>
+  </tfoot>
+</table>
+
+{% endblock %}

@@ -9,6 +9,8 @@ urlpatterns = patterns('',
     url(r'^$', 'kitty.views.home', name='home'),
     # creating a kitty
     url(r'^create/', 'kitty.views.create', name='create'),
+    # display kitty with ID
+    url(r'^(?P<id>\w{5})/', 'kitty.views.show'),
     # for setting language
     url(r'^i18n/', include('django.conf.urls.i18n')),
     # url(r'^kitty/', include('kitty.foo.urls')),
