@@ -1,0 +1,30 @@
+{% extends "master.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+<form class="form-horizontal" role="form" action="" method="post">
+{% csrf_token %}
+
+{{ form.non_field_errors }}
+
+{% for field in form %}
+  <div class="form-group">
+    <label class="col-sm-2 control-label" for="id_{{field.html_name}}">{{field.label}}</label>
+    <div class="col-sm-10">
+      {{ field }}
+      {% for error in field.errors %}
+        <strong>{{ error|escape }}</strong>
+      {% endfor %}
+    </div>
+  </div> 
+{% endfor %}
+
+<div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn">{% trans "Create"%}</button>
+    </div>
+</div>
+</form>
+{% endblock %}

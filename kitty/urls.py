@@ -7,6 +7,8 @@ from django.conf.urls import patterns, include, url
 urlpatterns = patterns('',
     # Welcome Page:
     url(r'^$', 'kitty.views.home', name='home'),
+    # creating a kitty
+    url(r'^create/', 'kitty.views.create', name='create'),
     # for setting language
     url(r'^i18n/', include('django.conf.urls.i18n')),
     # url(r'^kitty/', include('kitty.foo.urls')),

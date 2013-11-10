@@ -7,6 +7,13 @@ class Kitty(RandomPrimaryIdModel):
     name = models.CharField(max_length=50)
     created_by = models.CharField(max_length=50)
 
+# Form for creating a Kitty
+class KittyForm(forms.ModelForm):
+
+    class Meta:
+        model = Kitty
+        fields = ['name','created_by']
+
 # every Kitty has Items (e.g. a drink, coffee, snack)
 class Item(models.Model):
     kitty = models.ForeignKey(Kitty)
