@@ -2,6 +2,7 @@
 
 {% load i18n %}
 {% load staticfiles %}
+{% load addcss_filter %}
 
 {% block content %}
 <form class="form-horizontal" role="form" action="" method="post">
@@ -12,8 +13,8 @@
 {% for field in form %}
   <div class="form-group">
     <label class="col-sm-2 control-label" for="id_{{field.html_name}}">{{field.label}}</label>
-    <div class="col-sm-10">
-      {{ field }}
+    <div class="col-sm-5">
+      {{ field |addcss:"form-control"}}
       {% for error in field.errors %}
         <strong>{{ error|escape }}</strong>
       {% endfor %}
