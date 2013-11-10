@@ -13,7 +13,12 @@
 {% endblock %}
 
 {% block modals %}
-    {% include "modal_view.html" with identifier="newItem" k_id=k.id title="New Item" %}
+    <script>
+        function addItem() {
+        Dajaxice.kitty.addItem(Dajax.process,{'form':$('#id_newItem_form').serialize(true)});
+        }
+    </script>
+    {% include "modal_view.html" with identifier="newItem" k_id=k.id title="New Item" form=i_form onSave="addItem();" %}
     {% include "modal_view.html" with identifier="newUser" k_id=k.id title="New User" %}
 {% endblock %}
 
@@ -28,7 +33,6 @@
   <a href="#newUserModal" role="button" class="btn btn-primary" data-toggle="modal"><i class="icon-user icon-white"></i> {% trans "new User"%}</a>
 </div>
 
-<div class="container-full">
 <table class="table table-striped table-hover">
     <thead>
         <tr id="id_item_name_table">

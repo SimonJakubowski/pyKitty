@@ -22,6 +22,13 @@ class Item(models.Model):
     EAN = models.CharField(max_length=13, null=True, blank=True)
     quantity = models.IntegerField(max_length=5)
 
+# Form for creating an Item
+class ItemForm(forms.ModelForm):
+
+    class Meta:
+        model = Item
+        fields = ['name','price','EAN','quantity']
+
 # every Kitty has users with money (can be negative)
 class KittyUser(models.Model):
     kitty = models.ForeignKey(Kitty)
