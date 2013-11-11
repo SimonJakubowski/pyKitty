@@ -10,6 +10,14 @@
 <script src="{% static 'bootstrap/bootstrap.min.js' %}"></script>
 {% dajaxice_js_import %}
 <script src="{% static '/static/dajax/jquery.dajax.core.js' %}"></script>
+<script>
+    function incItem(item_id){
+        Dajaxice.kitty.incItem(Dajax.process,{'item_id':item_id});
+    }
+    function decItem(item_id){
+        Dajaxice.kitty.decItem(Dajax.process,{'item_id':item_id});
+    }
+</script>
 {% endblock %}
 
 {% block modals %}
@@ -51,13 +59,13 @@
         {% for user in u %}
             <tr id="id_user_{{user.id}}">
                 <td id="id_user_name_{{user.id}}">
-                    <a href="#">{{user.name}} ({{user.money|floatformat:2}} EUR)</a>
+                    {{user.name}} ({{user.money|floatformat:2}} EUR)
                 </td>
                 {% for userItem in user.useritem_set.all %}
                 <td style="text-align:right;"><span id="id_user_item_{{userItem.id}}">{{userItem.quantity}}</span> 
                     <div class="btn-group btn-group-vertical">
-                        <button class="btn btn-default btn-sm" onclick=""><span class="glyphicon glyphicon-chevron-up"></span></button>
-                        <button class="btn btn-default btn-sm" onclick=""><span class="glyphicon glyphicon-chevron-down"></span></button>
+                        <button class="btn btn-default btn-sm" onclick="incItem({{userItem.id}});"><span class="glyphicon glyphicon-chevron-up"></span></button>
+                        <button class="btn btn-default btn-sm" onclick="decItem({{userItem.id}});"><span class="glyphicon glyphicon-chevron-down"></span></button>
                     </div>
                 </td>
                 {% endfor %}
@@ -81,7 +89,7 @@
     <tr>
         <th>{% trans "available items" %}</th>
         {% for item in i %}
-        <th style="text-align:right;" id="id_item_quantity_{{item.id}}">{{item.quantity|subtract:item.useritem__quantity__sum}}</th>
+        <th style="text-align:right;" id="id_item_quantity_left_{{item.id}}">{{item.quantity|subtract:item.useritem__quantity__sum}}</th>
         {% endfor %}
     </tr>
   </tfoot>

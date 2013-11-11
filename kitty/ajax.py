@@ -2,6 +2,7 @@ from dajaxice.decorators import dajaxice_register
 from dajaxice.utils import deserialize_form
 from dajax.core import Dajax
 from kitty.models import ItemForm, KittyUser, KittyUserForm, Item, UserItem
+from django.db.models import Sum
 
 @dajaxice_register
 def addItem(request, form):
@@ -51,5 +52,61 @@ def addUser(request, form):
         dajax.remove_css_class('.form-group', 'has-error')
         for error in user_form.errors:
             dajax.script("$('#id_%s').parent().parent().addClass('has-error')" % error)
+
+    return dajax.json()
+
+@dajaxice_register
+def incItem(request, item_id):
+    dajax = Dajax()
+    
+    user_item = UserItem.objects.get(id = item_id)
+
+    # inc item count
+    user_item.quantity += 1
+        
+    # dec money of user
+    user = user_item.user;
+    user.money -= user_item.item.price;
+    
+    # save both
+    user_item.save()
+    user.save()
+
+    item = user_item.item
+    item_quantity = item.useritem_set.all().aggregate(Sum('quantity'))
+
+    # change frontend to new value
+    dajax.assign('#id_user_item_%s'%item_id, 'innerHTML', user_item.quantity)
+    dajax.assign('#id_user_name_%s'%user.id, 'innerHTML', '%s (%s EUR)'% (user.name, user.money))
+    dajax.assign('#id_item_quantity_%s'%item.id, 'innerHTML', item_quantity['quantity__sum'])
+    dajax.assign('#id_item_quantity_left_%s'%item.id, 'innerHTML', item.quantity - item_quantity['quantity__sum'])
+
+    return dajax.json()
+
+@dajaxice_register
+def decItem(request, item_id):
+    dajax = Dajax()
+    
+    user_item = UserItem.objects.get(id = item_id)
+    
+    # dec item count
+    user_item.quantity -= 1
+        
+    # giv back money to user
+    user = user_item.user;
+    user.money += user_item.item.price;
+    
+    # save both
+    user_item.save()
+    user.save()
+
+    item = user_item.item
+    item_quantity = item.useritem_set.all().aggregate(Sum('quantity'))
+
+    # change frontend to new value
+    dajax.assign('#id_user_item_%s'%item_id, 'innerHTML', user_item.quantity)
+    dajax.assign('#id_user_name_%s'%user.id, 'innerHTML', '%s (%s EUR)'% (user.name, user.money))
+    dajax.assign('#id_item_quantity_%s'%item.id, 'innerHTML', item_quantity['quantity__sum'])
+    dajax.assign('#id_item_quantity_left_%s'%item.id, 'innerHTML', item.quantity - item_quantity['quantity__sum'])
 
     return dajax.json()
