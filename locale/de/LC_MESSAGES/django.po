@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-10 19:12+0100\n"
+"POT-Creation-Date: 2013-11-12 14:57+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,11 +25,20 @@ msgstr ""
 msgid "English"
 msgstr ""
 
+#: kitty/views.py:45
+#, fuzzy
+msgid "edit item"
+msgstr "Getränk ändern"
+
+#: kitty/views.py:55
+msgid "edit user"
+msgstr "Nutzerdaten ändern"
+
 #: templates/create.html:27
 msgid "Create"
 msgstr "Erstellen"
 
-#: templates/show.html:28
+#: templates/show.html:64
 #, python-format
 msgid ""
 "\n"
@@ -37,31 +46,30 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"    Kaffeetasse wurde von %(created_by)s erstellt.\n"
+"    Kaffeekasse wurde von %(created_by)s erstellt.\n"
 "    "
 
-
-#: templates/show.html:32
+#: templates/show.html:68
 msgid "new Item"
 msgstr "neues Getränk"
 
-#: templates/show.html:33
+#: templates/show.html:69
 msgid "new User"
 msgstr "neuer Nutzer"
 
-#: templates/show.html:39
+#: templates/show.html:75
 msgid "Name (balance)"
 msgstr "Name (Guthaben)"
 
-#: templates/show.html:65
+#: templates/show.html:101
 msgid "item quantity"
 msgstr "Vorhandene Menge"
 
-#: templates/show.html:71
+#: templates/show.html:107
 msgid "consumed items"
 msgstr "Verbraucht"
 
-#: templates/show.html:77
+#: templates/show.html:113
 msgid "available items"
 msgstr "Noch vorhanden"
 
