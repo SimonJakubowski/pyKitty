@@ -31,3 +31,12 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
 )
+
+# API URLS
+urlpatterns += patterns('kitty.api',
+    url(r'^api/incItem/(?P<user_item_id>\d+)', 'incItem'),
+    url(r'^api/decItem/(?P<user_item_id>\d+)', 'decItem'),
+    url(r'^api/userItems/(?P<user_id>\d+)', 'userItems'),
+    url(r'^api/users/(?P<id>\w{5})/', 'users'),
+    url(r'^api/kitty/(?P<id>\w{5})/', 'kitty'),
+)
