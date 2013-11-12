@@ -36,3 +36,13 @@ def show(request, id):
                                             'i_form':i_form,
                                             'u':u,
                                             'u_form':u_form,})
+
+def itemModal(request, id, itemID):
+    item = Item.objects.filter(kitty_id=id).get(id=itemID)
+    form = ItemForm(instance=item)
+
+    return render(request, 'modal_view.html', {'identifier':"editItem",
+                                               'title':_("edit item"), 
+                                               'form':form,
+                                               'k_id':id,
+                                               'onSave':"editItem(%s);"%itemID})

@@ -13,6 +13,8 @@ urlpatterns = patterns('',
     # creating a kitty
     url(r'^create/', 'kitty.views.create', name='create'),
     # display kitty with ID
+    url(r'^(?P<id>\w{5})/itemModal/(?P<itemID>\d+)/', 'kitty.views.itemModal'),
+    # display kitty with ID
     url(r'^(?P<id>\w{5})/', 'kitty.views.show'),
     # for setting language
     url(r'^i18n/', include('django.conf.urls.i18n')),

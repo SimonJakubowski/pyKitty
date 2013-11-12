@@ -110,3 +110,24 @@ def decItem(request, item_id):
     dajax.assign('#id_item_quantity_left_%s'%item.id, 'innerHTML', item.quantity - item_quantity['quantity__sum'])
 
     return dajax.json()
+
+@dajaxice_register
+def editItem(request, form, item_id):
+    dajax = Dajax()
+    form = deserialize_form(form)
+    item = Item.objects.get(id = item_id)
+    item_form = ItemForm(form, instance=item)
+
+    if item_form.is_valid():
+        dajax.remove_css_class('.form-group', 'has-error')
+        # create new item in DB
+        item = item_form.save()
+
+        dajax.script("$('#editItemModal').modal('hide');")
+        dajax.script("location.reload();")
+    else:
+        dajax.remove_css_class('.form-group', 'has-error')
+        for error in item_form.errors:
+            dajax.script("$('#id_%s').parent().parent().addClass('has-error')" % error)
+   
+    return dajax.json()

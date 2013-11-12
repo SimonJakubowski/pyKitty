@@ -17,6 +17,11 @@
     function decItem(item_id){
         Dajaxice.kitty.decItem(Dajax.process,{'item_id':item_id});
     }
+    function itemModal(item_id){
+        $("#id_other_modal").load("./itemModal/"+item_id+"/", function() {
+            $("#editItemModal").modal('show');
+        });
+    }
 </script>
 {% endblock %}
 
@@ -33,6 +38,13 @@
         }
     </script>
     {% include "modal_view.html" with identifier="newUser" k_id=k.id title="New User" form=u_form onSave="addUser();" %}
+    <script>
+        function editItem(item_id) {
+        Dajaxice.kitty.editItem(Dajax.process,{'form':$('#id_editItem_form').serialize(true),
+                                               'item_id':item_id});
+        }
+    </script>
+    <div id="id_other_modal"></div>
 {% endblock %}
 
 {% block content %}
@@ -51,7 +63,7 @@
         <tr id="id_item_name_table">
                 <th>{% trans "Name (balance)"%}</th>
                 {% for item in i %}
-                    <th style="text-align:right;"><strong>{{item.name}}</strong> <br/> ({{item.price|floatformat:2}} EUR)</th>
+                    <th style="text-align:right;"><a href="#" onclick="itemModal({{item.id}});"><strong>{{item.name}}</strong> <br/> ({{item.price|floatformat:2}} EUR)</a></th>
                 {% endfor %}
         </tr>
     </thead>
