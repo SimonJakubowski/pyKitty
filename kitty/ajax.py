@@ -27,12 +27,33 @@ def addItem(request, form):
                 UserItem.objects.create(item=item, quantity=0, user=user)
         dajax.script("$('#newItemModal').modal('hide');")
         dajax.script("location.reload();")
+        brodcastNewItem(item)
     else:
         dajax.remove_css_class('.form-group', 'has-error')
         for error in item_form.errors:
             dajax.script("$('#id_%s').parent().parent().addClass('has-error')" % error)
    
     return dajax.json()
+
+def brodcastNewItem(item):
+    try:
+        # brodcast via redis to node.js Server
+        r = redis.StrictRedis(host='localhost', port=6379, db=0)
+
+        user_items = serializers.serialize("json", item.useritem_set.all())
+        message = {
+            "action": "new_item",
+            "item_name": item.name,
+            "item_price": item.price,
+            "item_id": item.id,
+            "item_quantity": item.quantity,
+            "user_items": user_items,
+        }
+        
+        r.publish(item.kitty_id, simplejson.dumps(message))
+
+    except Exception, e:
+        return HttpResponseServerError(str(e))
 
 @dajaxice_register
 def addUser(request, form):
@@ -102,8 +123,8 @@ def incItem(request, item_id):
     # change frontend to new value
     dajax.assign('#id_user_item_%s'%item_id, 'innerHTML', user_item.quantity)
     dajax.assign('#id_user_name_%s'%user.id, 'innerHTML', '%s (%s EUR)'% (user.name, user.money))
-    dajax.assign('#id_item_quantity_%s'%item.id, 'innerHTML', item_quantity['quantity__sum'])
-    dajax.assign('#id_item_quantity_left_%s'%item.id, 'innerHTML', item.quantity - item_quantity['quantity__sum'])
+    dajax.assign('#id_item_quantity_consumed_%s'%item.id, 'innerHTML', item_quantity['quantity__sum'])
+    dajax.assign('#id_item_quantity_available_%s'%item.id, 'innerHTML', item.quantity - item_quantity['quantity__sum'])
 
     return dajax.json()
 
@@ -130,8 +151,8 @@ def decItem(request, item_id):
     # change frontend to new value
     dajax.assign('#id_user_item_%s'%item_id, 'innerHTML', user_item.quantity)
     dajax.assign('#id_user_name_%s'%user.id, 'innerHTML', '%s (%s EUR)'% (user.name, user.money))
-    dajax.assign('#id_item_quantity_%s'%item.id, 'innerHTML', item_quantity['quantity__sum'])
-    dajax.assign('#id_item_quantity_left_%s'%item.id, 'innerHTML', item.quantity - item_quantity['quantity__sum'])
+    dajax.assign('#id_item_quantity_consumed_%s'%item.id, 'innerHTML', item_quantity['quantity__sum'])
+    dajax.assign('#id_item_quantity_available_%s'%item.id, 'innerHTML', item.quantity - item_quantity['quantity__sum'])
 
     return dajax.json()
 

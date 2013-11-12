@@ -53,6 +53,24 @@
                 $(html_string).hide().appendTo('#id_user_table').fadeIn();
             });
 
+            socket.on('new_item', function(json_data) {
+                var html_string = '<th style="text-align:right;"><a href="#" onclick="itemModal('+json_data.item_id+');"><strong>'+json_data.item_name+'</strong> <br/> ('+json_data.item_price.toFixed(2)+' EUR)</a></th>'
+                $(html_string).hide().appendTo('#id_item_name_table').fadeIn();
+                var user_items = jQuery.parseJSON(json_data.user_items);
+
+                for (i in user_items) {
+                    html_string = '<td style="text-align:right;"><span id="id_user_item_'+user_items[i].pk+'">'+user_items[i].fields.quantity+'</span> <div class="btn-group btn-group-vertical"><button class="btn btn-default btn-sm" onclick="incItem('+user_items[i].pk+');"><span class="glyphicon glyphicon-chevron-up"></span></button><button class="btn btn-default btn-sm" onclick="decItem('+user_items[i].pk+');"><span class="glyphicon glyphicon-chevron-down"></span></button></div></td>';
+                    $(html_string).hide().appendTo('#id_user_'+user_items[i].fields.user).fadeIn();
+                }
+                html_string = '<th style="text-align:right;" id="id_item_quantity_'+json_data.item_id+'">'+json_data.item_quantity+'</th>'
+                $(html_string).hide().appendTo('#id_item_quantity').fadeIn();
+                html_string = '<th style="text-align:right;" id="id_item_quantity_consumed_'+json_data.item_id+'">0</th>'
+                $(html_string).hide().appendTo('#id_item_quantity_consumed').fadeIn();
+                html_string = '<th style="text-align:right;" id="id_item_quantity_available_'+json_data.item_id+'">'+json_data.item_quantity+'</th>'
+                $(html_string).hide().appendTo('#id_item_quantity_available').fadeIn();
+
+            });
+
         });
 </script>
 {% endblock %}
@@ -124,22 +142,22 @@
     </tr>
   </tbody>
   <tfoot>
-    <tr>
+    <tr id="id_item_quantity">
         <th>{% trans "item quantity" %}</th>
         {% for item in i %}
-        <th style="text-align:right;">{{item.quantity}}</th>
+        <th style="text-align:right;" id="id_item_quantity_{{item.id}}">{{item.quantity}}</th>
         {% endfor %}
     </tr>
-    <tr id="id_item_quantity_table">
+    <tr id="id_item_quantity_consumed">
         <th>{% trans "consumed items" %}</th>
         {% for item in i %}
-        <th style="text-align:right;" id="id_item_quantity_{{item.id}}">{{item.useritem__quantity__sum}}</th>
+        <th style="text-align:right;" id="id_item_quantity_consumed_{{item.id}}">{{item.useritem__quantity__sum}}</th>
         {% endfor %}    
     </tr>
-    <tr>
+    <tr id="id_item_quantity_available">
         <th>{% trans "available items" %}</th>
         {% for item in i %}
-        <th style="text-align:right;" id="id_item_quantity_left_{{item.id}}">{{item.quantity|subtract:item.useritem__quantity__sum}}</th>
+        <th style="text-align:right;" id="id_item_quantity_available_{{item.id}}">{{item.quantity|subtract:item.useritem__quantity__sum}}</th>
         {% endfor %}
     </tr>
   </tfoot>
