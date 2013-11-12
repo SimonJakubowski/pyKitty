@@ -3,6 +3,10 @@ from dajaxice.utils import deserialize_form
 from dajax.core import Dajax
 from kitty.models import ItemForm, KittyUser, KittyUserForm, Item, UserItem
 from django.db.models import Sum
+import redis
+from django.http import HttpResponseServerError
+from django.utils import simplejson
+from django.core import serializers
 
 @dajaxice_register
 def addItem(request, form):
@@ -48,12 +52,32 @@ def addUser(request, form):
                 UserItem.objects.create(item=item, quantity=0, user=user)
         dajax.script("$('#newUserModal').modal('hide');")
         dajax.script("location.reload();")
+        brodcastNewUser(user)
     else:
         dajax.remove_css_class('.form-group', 'has-error')
         for error in user_form.errors:
             dajax.script("$('#id_%s').parent().parent().addClass('has-error')" % error)
 
     return dajax.json()
+
+def brodcastNewUser(user):
+    try:
+        # brodcast via redis to node.js Server
+        r = redis.StrictRedis(host='localhost', port=6379, db=0)
+
+        user_items = serializers.serialize("json", user.useritem_set.all())
+        message = {
+            "action": "new_user",
+            "id":user.id,
+            "name":user.name,
+            "money":user.money,
+            "user_items":user_items,
+        }
+
+        print r.publish(user.kitty_id, simplejson.dumps(message))
+
+    except Exception, e:
+        return HttpResponseServerError(str(e))
 
 @dajaxice_register
 def incItem(request, item_id):

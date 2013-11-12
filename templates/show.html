@@ -10,6 +10,7 @@
 <script src="{% static 'bootstrap/bootstrap.min.js' %}"></script>
 {% dajaxice_js_import %}
 <script src="{% static '/static/dajax/jquery.dajax.core.js' %}"></script>
+<script src="http://{{s_io_server}}:{{s_io_port}}/socket.io/socket.io.js"></script>
 <script>
     function incItem(item_id){
         Dajaxice.kitty.incItem(Dajax.process,{'item_id':item_id});
@@ -27,6 +28,32 @@
             $("#editUserModal").modal('show');
         });
     }
+</script>
+<script>
+// socket.io
+    var socket = io.connect('{{s_io_server}}', {port: {{s_io_port}}});
+        $(document).ready(function(){
+            
+            socket.on('connect', function(){
+                socket.emit ('join_room', '{{k.id}}');
+                console.log("join room: {{k.id}}");
+            });
+
+            socket.on('new_user', function(json_data) {
+                var html_string = '<tr id="id_user_'+json_data.id+'">';
+                html_string = html_string + '<td><a href="#" onclick="userModal('+json_data.id+');" id="id_user_name_'+json_data.id+'">'+json_data.name+' ('+json_data.money.toFixed(2)+' EUR)</a></td>';
+
+                var user_items = jQuery.parseJSON(json_data.user_items);
+
+                for (i in user_items) {
+                    html_string = html_string + '<td style="text-align:right;"><span id="id_user_item_'+user_items[i].pk+'">'+user_items[i].fields.quantity+'</span> <div class="btn-group btn-group-vertical"><button class="btn btn-default btn-sm" onclick="incItem('+user_items[i].pk+');"><span class="glyphicon glyphicon-chevron-up"></span></button><button class="btn btn-default btn-sm" onclick="decItem('+user_items[i].pk+');"><span class="glyphicon glyphicon-chevron-down"></span></button></div></td>';
+                }
+                html_string = html_string + "</tr>";
+                
+                $(html_string).hide().appendTo('#id_user_table').fadeIn();
+            });
+
+        });
 </script>
 {% endblock %}
 

@@ -3,6 +3,9 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+SOCKET_IO_SERVER = 'localhost'
+SOCKET_IO_PORT = '4000'
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )

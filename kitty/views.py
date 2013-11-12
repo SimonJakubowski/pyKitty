@@ -4,6 +4,7 @@ from django.utils.translation import gettext as _
 from django.utils import translation
 from kitty.models import KittyForm, Kitty, Item, ItemForm, KittyUser, KittyUserForm
 from django.db.models import Sum
+from django.conf import settings
 
 LANGUAGES = (
   ('de', _('German')),
@@ -35,7 +36,9 @@ def show(request, id):
                                             'i':i, 
                                             'i_form':i_form,
                                             'u':u,
-                                            'u_form':u_form,})
+                                            'u_form':u_form,
+                                            's_io_server': settings.SOCKET_IO_SERVER,
+                                            's_io_port': settings.SOCKET_IO_PORT,})
 
 def itemModal(request, id, itemID):
     item = Item.objects.filter(kitty_id=id).get(id=itemID)
