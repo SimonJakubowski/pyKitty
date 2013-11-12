@@ -12,8 +12,10 @@ urlpatterns = patterns('',
     url(r'^$', 'kitty.views.home', name='home'),
     # creating a kitty
     url(r'^create/', 'kitty.views.create', name='create'),
-    # display kitty with ID
+    # display item Modal
     url(r'^(?P<id>\w{5})/itemModal/(?P<itemID>\d+)/', 'kitty.views.itemModal'),
+    # display user Modal
+    url(r'^(?P<id>\w{5})/userModal/(?P<userID>\d+)/', 'kitty.views.userModal'),
     # display kitty with ID
     url(r'^(?P<id>\w{5})/', 'kitty.views.show'),
     # for setting language

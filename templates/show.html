@@ -22,6 +22,11 @@
             $("#editItemModal").modal('show');
         });
     }
+    function userModal(user_id){
+        $("#id_other_modal").load("./userModal/"+user_id+"/", function() {
+            $("#editUserModal").modal('show');
+        });
+    }
 </script>
 {% endblock %}
 
@@ -42,6 +47,12 @@
         function editItem(item_id) {
         Dajaxice.kitty.editItem(Dajax.process,{'form':$('#id_editItem_form').serialize(true),
                                                'item_id':item_id});
+        }
+    </script>
+    <script>
+        function editUser(user_id) {
+        Dajaxice.kitty.editUser(Dajax.process,{'form':$('#id_editUser_form').serialize(true),
+                                               'user_id':user_id});
         }
     </script>
     <div id="id_other_modal"></div>
@@ -70,8 +81,8 @@
     <tbody id="id_user_table">
         {% for user in u %}
             <tr id="id_user_{{user.id}}">
-                <td id="id_user_name_{{user.id}}">
-                    {{user.name}} ({{user.money|floatformat:2}} EUR)
+                <td>
+                    <a href="#" onclick="userModal({{user.id}});" id="id_user_name_{{user.id}}">{{user.name}} ({{user.money|floatformat:2}} EUR)</a>
                 </td>
                 {% for userItem in user.useritem_set.all %}
                 <td style="text-align:right;"><span id="id_user_item_{{userItem.id}}">{{userItem.quantity}}</span> 

@@ -46,3 +46,13 @@ def itemModal(request, id, itemID):
                                                'form':form,
                                                'k_id':id,
                                                'onSave':"editItem(%s);"%itemID})
+
+def userModal(request, id, userID):
+    user = KittyUser.objects.filter(kitty_id=id).get(id=userID)
+    form = KittyUserForm(instance=user)
+
+    return render(request, 'modal_view.html', {'identifier':"editUser",
+                                               'title':_("edit user"), 
+                                               'form':form,
+                                               'k_id':id,
+                                               'onSave':"editUser(%s);"%userID})

@@ -131,3 +131,24 @@ def editItem(request, form, item_id):
             dajax.script("$('#id_%s').parent().parent().addClass('has-error')" % error)
    
     return dajax.json()
+
+@dajaxice_register
+def editUser(request, form, user_id):
+    dajax = Dajax()
+    form = deserialize_form(form)
+    user = KittyUser.objects.get(id = user_id)
+    user_form = KittyUserForm(form, instance=user)
+
+    if user_form.is_valid():
+        dajax.remove_css_class('.form-group', 'has-error')
+        # create new item in DB
+        user = user_form.save()
+
+        dajax.script("$('#editUserModal').modal('hide');")
+        dajax.script("location.reload();")
+    else:
+        dajax.remove_css_class('.form-group', 'has-error')
+        for error in user_form.errors:
+            dajax.script("$('#id_%s').parent().parent().addClass('has-error')" % error)
+   
+    return dajax.json()
