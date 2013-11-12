@@ -71,6 +71,13 @@
 
             });
 
+            socket.on('update_user_item', function(json_data) {
+                $('#id_user_item_' + json_data.user_item_id).html(json_data.user_item_quantity);
+                $('#id_user_name_'+ json_data.user_id).html(json_data.user_name+' ('+json_data.user_money.toFixed(2)+' EUR)');
+                $('#id_item_quantity_consumed_'+ json_data.item_id).html(json_data.item_quantity_sum);
+                $('#id_item_quantity_available_'+ json_data.item_id).html(json_data.item_quantity-json_data.item_quantity_sum);
+            });
+
         });
 </script>
 {% endblock %}

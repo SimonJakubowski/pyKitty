@@ -95,7 +95,7 @@ def brodcastNewUser(user):
             "user_items":user_items,
         }
 
-        print r.publish(user.kitty_id, simplejson.dumps(message))
+        r.publish(user.kitty_id, simplejson.dumps(message))
 
     except Exception, e:
         return HttpResponseServerError(str(e))
@@ -126,6 +126,8 @@ def incItem(request, item_id):
     dajax.assign('#id_item_quantity_consumed_%s'%item.id, 'innerHTML', item_quantity['quantity__sum'])
     dajax.assign('#id_item_quantity_available_%s'%item.id, 'innerHTML', item.quantity - item_quantity['quantity__sum'])
 
+    brodcastUpdateUserItem(user_item)
+
     return dajax.json()
 
 @dajaxice_register
@@ -154,7 +156,32 @@ def decItem(request, item_id):
     dajax.assign('#id_item_quantity_consumed_%s'%item.id, 'innerHTML', item_quantity['quantity__sum'])
     dajax.assign('#id_item_quantity_available_%s'%item.id, 'innerHTML', item.quantity - item_quantity['quantity__sum'])
 
+    brodcastUpdateUserItem(user_item)
+
     return dajax.json()
+
+def brodcastUpdateUserItem(user_item):
+    try:
+        # brodcast via redis to node.js Server
+        r = redis.StrictRedis(host='localhost', port=6379, db=0)
+        item = user_item.item
+        item_quantity = item.useritem_set.all().aggregate(Sum('quantity'))
+        message = {
+            "action": "update_user_item",
+            "user_item_id": user_item.id,
+            "user_item_quantity" : user_item.quantity,
+            "user_id" : user_item.user.id,
+            "user_name" : user_item.user.name,
+            "user_money" : user_item.user.money,
+            "item_id": user_item.item.id,
+            "item_quantity": item.quantity,
+            "item_quantity_sum": item_quantity['quantity__sum'],
+        }
+        
+        r.publish(user_item.user.kitty.id, simplejson.dumps(message))
+
+    except Exception, e:
+        return HttpResponseServerError(str(e))
 
 @dajaxice_register
 def editItem(request, form, item_id):
