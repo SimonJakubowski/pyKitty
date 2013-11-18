@@ -13,7 +13,7 @@ Requirements
 * [Django](https://www.djangoproject.com/download/)
 * [django-dajaxice](https://github.com/jorgebastida/django-dajaxice/)
 * [django-dajax](https://github.com/jorgebastida/django-dajax/)
-* [dajngo-redis](https://github.com/niwibe/django-redis)
+* [django-redis](https://github.com/niwibe/django-redis)
 * [Node.js](http://nodejs.org/)
 * [redis](http://redis.io/)
 
