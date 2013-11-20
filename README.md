@@ -7,6 +7,11 @@ Demo
 ----
 http://kitty.pygroup.de/
 
+iPhone Client
+-------------
+
+* [KittyClient](https://github.com/CooperRS/KittyClient) (Thanks to Roland Moers)
+
 Requirements
 ------------
 
